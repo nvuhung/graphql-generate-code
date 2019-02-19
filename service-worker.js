@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nvuhung/graphql-generate-code/precache-manifest.8100c0c8526f63c198de46e7eaf105a0.js"
+  "/graphql-generate-code/precache-manifest.9d4a80157702213801f3371d756bd785.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/nvuhung/graphql-generate-code/index.html", {
+workbox.routing.registerNavigationRoute("/graphql-generate-code/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });

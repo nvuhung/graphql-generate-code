@@ -1,15 +1,15 @@
 {
-  "main.css": "/nvuhung/graphql-generate-code/static/css/main.a87d520f.chunk.css",
-  "main.js": "/nvuhung/graphql-generate-code/static/js/main.a14380c8.chunk.js",
-  "main.js.map": "/nvuhung/graphql-generate-code/static/js/main.a14380c8.chunk.js.map",
-  "runtime~main.js": "/nvuhung/graphql-generate-code/static/js/runtime~main.6fcf957a.js",
-  "runtime~main.js.map": "/nvuhung/graphql-generate-code/static/js/runtime~main.6fcf957a.js.map",
-  "static/css/2.1461430b.chunk.css": "/nvuhung/graphql-generate-code/static/css/2.1461430b.chunk.css",
-  "static/js/2.a0733455.chunk.js": "/nvuhung/graphql-generate-code/static/js/2.a0733455.chunk.js",
-  "static/js/2.a0733455.chunk.js.map": "/nvuhung/graphql-generate-code/static/js/2.a0733455.chunk.js.map",
-  "index.html": "/nvuhung/graphql-generate-code/index.html",
-  "precache-manifest.8100c0c8526f63c198de46e7eaf105a0.js": "/nvuhung/graphql-generate-code/precache-manifest.8100c0c8526f63c198de46e7eaf105a0.js",
-  "service-worker.js": "/nvuhung/graphql-generate-code/service-worker.js",
-  "static/css/2.1461430b.chunk.css.map": "/nvuhung/graphql-generate-code/static/css/2.1461430b.chunk.css.map",
-  "static/css/main.a87d520f.chunk.css.map": "/nvuhung/graphql-generate-code/static/css/main.a87d520f.chunk.css.map"
+  "main.css": "/graphql-generate-code/static/css/main.a87d520f.chunk.css",
+  "main.js": "/graphql-generate-code/static/js/main.1f291f5e.chunk.js",
+  "main.js.map": "/graphql-generate-code/static/js/main.1f291f5e.chunk.js.map",
+  "runtime~main.js": "/graphql-generate-code/static/js/runtime~main.00ad3798.js",
+  "runtime~main.js.map": "/graphql-generate-code/static/js/runtime~main.00ad3798.js.map",
+  "static/css/2.1461430b.chunk.css": "/graphql-generate-code/static/css/2.1461430b.chunk.css",
+  "static/js/2.54b5ac2d.chunk.js": "/graphql-generate-code/static/js/2.54b5ac2d.chunk.js",
+  "static/js/2.54b5ac2d.chunk.js.map": "/graphql-generate-code/static/js/2.54b5ac2d.chunk.js.map",
+  "index.html": "/graphql-generate-code/index.html",
+  "precache-manifest.9d4a80157702213801f3371d756bd785.js": "/graphql-generate-code/precache-manifest.9d4a80157702213801f3371d756bd785.js",
+  "service-worker.js": "/graphql-generate-code/service-worker.js",
+  "static/css/2.1461430b.chunk.css.map": "/graphql-generate-code/static/css/2.1461430b.chunk.css.map",
+  "static/css/main.a87d520f.chunk.css.map": "/graphql-generate-code/static/css/main.a87d520f.chunk.css.map"
 }
