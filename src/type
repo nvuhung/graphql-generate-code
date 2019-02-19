@@ -1,0 +1,1162 @@
+directive @auth(excludes: [String] = ["loginUser"]) on OBJECT | FIELD_DEFINITION
+
+directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+type AccessToken {
+  access_token: String
+  expires_in: Int
+  token_type: String
+  scope: String
+  refresh_token: String
+}
+
+input AccountInput {
+  username: String!
+  password: String!
+  phone_numbers: [PhoneNumberInput]
+  email: Email
+  profile: ProfileInput!
+  last_name: String!
+  first_name: String!
+  groups: [String!]!
+}
+
+input AccountUpdateInput {
+  username: String
+  phone_numbers: [PhoneNumberInput]
+  email: Email
+  profile: ProfileInput!
+  last_name: String
+  first_name: String
+  groups: [String]
+}
+
+type ActiveHistory {
+  time: DateTime
+  action: String
+}
+
+type AddDevicesToLandlordResponse {
+  id: String
+  property_id: String
+  type: Int
+  ami_e_device: String
+  ami_f_device: String
+}
+
+type Address {
+  id: String
+  street_line: String
+  ward_type: String
+  ward: String
+  district_type: String
+  district: String
+  city_type: String
+  city: String
+  coordinate: String
+}
+
+input AddressInput {
+  street_line: String
+  ward: Int
+  district: Int
+  city: Int
+}
+
+type AddressOnUser {
+  id: String
+  street_line: String
+  ward: Int
+  district: Int
+  city: Int
+}
+
+type AmiEDetail {
+  total_kwh: Float
+  total_money: Float
+  money_per_date: Float
+  money_per_month: Float
+  status: String
+  current_volt: Float
+  current_ampe: Float
+  current_kwh: Float
+  ami_e_name: String
+}
+
+type AmiEDevices {
+  deviceId: String
+  generationId: String
+  etag: String
+  connectionState: String
+  status: String
+  statusReason: String
+  connectionStateUpdatedTime: String
+  statusUpdatedTime: String
+  lastActivityTime: String
+  cloudToDeviceMessageCount: Int
+  property: DeviceLandlord
+}
+
+type AmiELandlord {
+  kwh: Float
+  pre_money: Float
+  money_per_date: Float
+  money_per_month: Float
+  status: String
+  current_ampe: Float
+  current_volt: Float
+  current_kwh: Float
+  ami_e_name: String
+  device_info: DeviceInfo
+}
+
+type AmiFDevices {
+  deviceId: String
+  generationId: String
+  etag: String
+  connectionState: String
+  status: String
+  statusReason: String
+  connectionStateUpdatedTime: String
+  statusUpdatedTime: String
+  lastActivityTime: String
+  cloudToDeviceMessageCount: Int
+  property: DeviceLandlord
+  amif_info: AmiFLandlord
+}
+
+type AmiFLandlord {
+  connection_state: String
+  device_id: String
+  battery_lock: String
+  battery_level: String
+  door_state: String
+  latest_door_open: String
+}
+
+type AmiRoom {
+  id: String
+  title: String
+  floor: String
+  type: Int
+  description: String
+  en_description: String
+  acreage: Int
+  electricity_fee: String
+  water_fee_type: Int
+  water_fee: String
+  monthly_price: String
+  daily_price: String
+  max_occupier: Int
+  property: House
+  room_spaces: AmiRoomSpace
+  room_facility: [AmiRoomFacility]
+  room_services: [AmiRoomService]
+  room_other_facility: [AmiRoomOtherFacility]
+  contract: [String]
+  total_deposit: String
+  latest_electricity_number: Int
+  latest_water_number: Int
+  room_images: [AmiRoomImage]
+  room_status: Int
+  ami_room: AmiRoomUnlock
+}
+
+type AmiRoomFacility {
+  facility: String
+  quantity: Int
+  title: String
+  description: String
+}
+
+type AmiRoomImage {
+  id: String
+  image: String
+  room: String
+  uploaded_by: String
+  created: DateTime
+  modified: DateTime
+  title: String
+  vn_description: String
+  en_description: String
+  is_default: Boolean
+}
+
+type AmiRoomOtherFacility {
+  facility: String
+  quantity: Int
+}
+
+type AmiRoomService {
+  service: String
+  price: String
+}
+
+type AmiRoomSpace {
+  living_room: Int
+  kitchen: Int
+  bedroom: Int
+  bathroom: Int
+  balcony: Int
+}
+
+type AmiRoomUnlock {
+  id: String
+  room: String
+  created: DateTime
+  modified: DateTime
+  status: Boolean
+  posted_at: DateTime
+  closed_at: DateTime
+  monthly_price: String
+  daily_price: String
+  is_promote: Boolean
+  promote_title: String
+  promote_from: DateTime
+  promote_to: DateTime
+}
+
+input AmiRoomUnlockInput {
+  room: String
+  status: Boolean
+  posted_at: DateTime
+  closed_at: DateTime
+  monthly_price: String
+  daily_price: String
+  is_promote: Boolean
+  promote_title: String
+  promote_from: DateTime
+  promote_to: DateTime
+}
+
+type BillStatusBuilding {
+  num_send_receipt: Int
+  num_send_bill: Int
+  num_save_bill: Int
+  num_bill_not_created: Int
+  num_empty_apartment: Int
+}
+
+type BillStatusLandlord {
+  amipay: Int
+  paid: Int
+  unpaid: Int
+}
+
+type BuildingIssue {
+  month_1: Int
+  month_2: Int
+  month_3: Int
+  month_4: Int
+  month_5: Int
+  month_6: Int
+  month_7: Int
+  month_8: Int
+  month_9: Int
+  month_10: Int
+  month_11: Int
+  month_12: Int
+}
+
+type BuildingIssueStatus {
+  status_0: Int
+  status_1: Int
+  status_2: Int
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+type Campaign {
+  id: String
+  name: String
+  title: String
+  description: String
+  slug: String
+  status: Int
+  activate_date: DateTime
+  deactivate_date: DateTime
+  image: String
+  archived: Boolean
+  quantity: Int
+  enrollmentQuantity: Int
+  category: CampaignCategory
+  target: CampaignTarget
+}
+
+type CampaignCategory {
+  id: String
+  status: Int
+  activate_date: DateTime
+  deactivate_date: DateTime
+  title: String
+  archived: Boolean
+}
+
+type CampaignEnrollment {
+  id: String
+  register_id: String
+  created: String
+  modified: String
+  status: Int
+  user_info: User
+}
+
+input CampaignInput {
+  image: Upload
+  name: String!
+  title: String!
+  description: String!
+  status: Int
+  quantity: Int!
+  additional_quantity: Int
+  activate_date: DateTime!
+  deactivate_date: DateTime
+  target: TargetInput!
+  category: String!
+}
+
+type CampaignTarget {
+  id: String
+  created: DateTime
+  modified: DateTime
+  age_from: Int
+  age_to: Int
+  city: Int
+  district: Int
+  gender: String
+}
+
+type Company {
+  id: String
+  created: DateTime
+  modified: DateTime
+  title: String
+  description: String
+  slug: String
+  status: Int
+  activate_date: DateTime
+  deactivate_date: DateTime
+  name: String
+  tax_number: String
+  address: String
+  representative: String
+  representative_id_number: String
+  phone_number: String
+  houses: [House]
+  owner: [Landlord]
+  brand_logo: String
+  brand: String
+  is_active_brand: Boolean
+}
+
+input CompanyGenerateInput {
+  title: String
+  name: String
+  tax_number: String
+  address: String
+  representative: String
+  representative_id_number: String
+  phone_number: String
+  brand_logo: Upload
+  brand: String
+  is_active_brand: Boolean
+}
+
+input CompanyInput {
+  id: String
+}
+
+type Contract {
+  id: String
+  avatar: String
+  check_in: String
+  check_out: String
+  last_name: String
+  first_name: String
+  int_tel_code: String
+  phone_number: String
+}
+
+type DashboardBuilding {
+  company: Int
+  building: Int
+  block: Int
+  apartment: Int
+  resident: Int
+  staff: Int
+}
+
+type DashboardLandlord {
+  total_landlord: Int
+  total_manager: Int
+  total_hero: Int
+  total_property: Int
+  total_room: Int
+  total_renter: Int
+}
+
+"""
+The DateTime scalar type represents date time strings complying to ISO-8601.
+"""
+scalar DateTime
+
+input DeviceIdInput {
+  deviceId: String!
+}
+
+type DeviceInfo {
+  device_id: String
+  connection_state: String
+  status: String
+}
+
+type DeviceLandlord {
+  id: String
+  address: Address
+  title: String
+  owner_id: String
+  owner_identity_id: String
+  created: String
+  modified: String
+  property: IdTitle
+  property_id: String
+  type: Int
+  ami_e_device: String
+  ami_f_device: String
+}
+
+input DevicesLandlordInput {
+  property_id: String!
+  type: Int!
+  ami_e_device: String
+  ami_f_device: String
+}
+
+"""
+The Email scalar type represents E-Mail addresses compliant to RFC 822.
+"""
+scalar Email
+
+type File {
+  url: String
+  path: String
+}
+
+input FilterInput {
+  property: String
+  value: String
+}
+
+type FinanceAmiCDeposit {
+  id: String
+  property_id: House
+  room_id: AmiRoom
+  amount: String
+  created: DateTime
+  note: String
+  deposited_by_id: String
+  created_by_id: Landlord
+  owner_id: Landlord
+  is_holding: Boolean
+}
+
+type FinanceAmiCInvoice {
+  id: String
+  code: Int
+  total_price: String
+  amount_paid: String
+  amount_left: String
+  status: Int
+  title: String
+  property_id: House
+  room_id: AmiRoom
+  manager_id: Landlord
+  owner_id: Landlord
+  contract_details: [Contract]
+  is_ami_pay: Boolean
+}
+
+type Finger {
+  device_name: String
+  finger: String
+  create_date: String
+  server_id: Int
+  status: Int
+  server_info: FingerprintServerInfo
+}
+
+type FingerprintHistory {
+  Command: String
+  DeviceId: String
+  ServerUserId: String
+  UserId: String
+  Time: String
+  TimeDevice: String
+  Name: String
+  Phone: String
+  Role: Int
+}
+
+input FingerprintHistoryInput {
+  device_name: String!
+  date: String
+  name: String
+}
+
+type FingerprintServerInfo {
+  UserId: String
+  DataFinger: String
+  Time: String
+  ResponseStatus: String
+}
+
+type GetAccountsResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [User]
+}
+
+type GetActiveHistoryResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [ActiveHistory]
+}
+
+type GetAmiRoomResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [AmiRoom]
+}
+
+type GetAmiRoomUnlockResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [AmiRoomUnlock]
+}
+
+type GetCampaignEnrollmentResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [CampaignEnrollment]
+}
+
+type GetCampaignsResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Campaign]
+}
+
+type GetCategoriesResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [CampaignCategory]
+}
+
+type GetCitiesResponse {
+  code: Int
+  name: String
+  type: String
+}
+
+type GetCompanyResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Company]
+}
+
+type GetDistrictsResponse {
+  id: Int
+  name: String
+  type: String
+  city: Int
+}
+
+type GetFinanceAmiCDepositResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [FinanceAmiCDeposit]
+}
+
+type GetFinanceAmiCInvoiceResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [FinanceAmiCInvoice]
+}
+
+type GetGroupsResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Role]
+}
+
+type GetHouseResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [House]
+}
+
+type GetIotManagementResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [IotLandlordManagement]
+}
+
+type GetLandlordResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Landlord]
+}
+
+type GetPoliceDepartmentResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [PoliceDepartment]
+}
+
+type GetPoliceResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Police]
+}
+
+type GetProductRolesResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Product]
+}
+
+type GetRegUsersFingerprintResponse {
+  count: Int
+  results: [FingerprintHistory]
+}
+
+type GetRoomManagementResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [IotRoomManagement]
+}
+
+type GetTaskResponse {
+  count: Int
+  next: String
+  previous: String
+  results: [Task]
+}
+
+type GetTotalAccountUniversityResponse {
+  total: Int
+  total_student: Int
+  total_university: Int
+}
+
+type GetWardsResponse {
+  id: Int
+  name: String
+  type: String
+  district: Int
+}
+
+type Group {
+  id: String
+  group: Role
+}
+
+input GroupInput {
+  id: String
+  name: String
+}
+
+type House {
+  id: String
+  created: DateTime
+  modified: DateTime
+  title: String
+  slug: String
+  status: Int
+  send_bill_at: Int
+  collect_payment_at: Int
+  type: Int
+  electricity_fee: String
+  water_fee_type: Int
+  water_fee: String
+  company: Company
+  total_room: Int
+  total_tenant: Int
+  total_bike: Int
+  en_description: String
+  vn_description: String
+  manage_by: Landlord
+  address_id: Address
+  owner: Landlord
+  count: Int
+  next: String
+  previous: String
+  created_by: String
+  room_status: [RoomStatus]
+  heroes: [Landlord]
+}
+
+input HouseInput {
+  title: String
+  address_id: AddressInput
+  send_bill_at: String
+  collect_payment_at: String
+  en_description: String
+  vn_description: String
+  manage_by: ManageInput
+  electricity_fee: Int
+  water_fee_type: Int
+  water_fee: Int
+  type: Int
+  owner: LandlordInput!
+  company: CompanyInput!
+  heroes: [String]
+}
+
+type IdTitle {
+  id: String
+  title: String
+}
+
+type IotDevice {
+  deviceId: String
+  generationId: String
+  etag: String
+  connectionState: String
+  status: String
+  statusReason: String
+  connectionStateUpdatedTime: String
+  statusUpdatedTime: String
+  lastActivityTime: String
+  cloudToDeviceMessageCount: Int
+}
+
+input IotFilterOptions {
+  deviceId: String
+  status: String
+  connectionState: String
+}
+
+type IotLandlordManagement {
+  id: String
+  title: String
+  address: Address
+  owner: Landlord
+  summary: IotTotal
+  company: IdTitle
+  iot_id: String
+  ami_e: AmiELandlord
+  ami_f: AmiFLandlord
+  property_detail: House
+}
+
+type IotRoomManagement {
+  id: String
+  title: String
+  electricity_fee: String
+  latest_electricity_number: Int
+  send_bill_at: Int
+  iot_id: String
+  ami_e: AmiELandlord
+  ami_f: AmiFLandlord
+}
+
+type IotTotal {
+  total_ami_e: Int
+  total_ami_f: Int
+}
+
+type Landlord {
+  id: String
+  username: User
+  first_name: String
+  last_name: String
+  phone_number: String
+  avatar: String
+  gender: Int
+  email: String
+  date_of_birth: String
+  identity_number: String
+  join_date: String
+  passport: String
+  position: Int
+  permanent_address_id: Address
+  id_issued_by: String
+  id_valid_date: String
+  company: Company
+  houses: [House]
+  is_active: Boolean
+  archived: Boolean
+}
+
+type LandlordHeroIssue {
+  lt_4h: Int
+  lt_8h_gt_4h: Int
+  lt_2d_gt_8h: Int
+  lt_3d_gt_2d: Int
+  gt_3d: Int
+}
+
+input LandlordInput {
+  id: String
+}
+
+type LandlordIssue {
+  status_0: Int
+  status_1: Int
+  status_2: Int
+}
+
+input ManageInput {
+  id: String
+}
+
+type Mutation {
+  coreMutation: String
+  createAccount(account: AccountInput!): String
+  updateAccount(id: String!, account: AccountUpdateInput!): User
+  deleteAccount(id: String!): Boolean
+  setPasswordAccount(id: String!, password: String!): Boolean
+  loginUser(username: String!, password: String!): AccessToken
+  createHouse(params: HouseInput!): House
+  updateHouse(id: String!, params: HouseInput!): House
+  deleteHouse(id: String!): Boolean
+  createCompany(params: CompanyGenerateInput!): Company
+  updateCompany(id: String!, params: CompanyGenerateInput!): Company
+  saveCompany(id: String, params: CompanyGenerateInput!): Company
+  deleteCompany(id: String!): Boolean
+  createLandlord(user_id: String!, company_id: String!, position: Int!): Landlord
+  updateLandlord(landlord_id: String!, user_id: String!, company_id: String!, position: Int!): Landlord
+  createManager(user_id: String!, company_id: String!): Landlord
+  createHero(user_id: String!, company_id: String!): Landlord
+  deleteLandlord(id: String!): Landlord
+  deactiveLandlord(id: String!): Boolean
+  activeLandlord(id: String!): Boolean
+  createOneProductRoles(title: String!, description: String!, product_group: [GroupInput]): Product
+  updateProductRoles(id: String!, title: String!, description: String, product_group: [GroupInput]): Product
+  uploadImage(file: Upload!, options: UploadOptions!): File!
+  createOneRoom(title: String, floor: String, type: Int, description: String, en_description: String, acreage: Int, electricity_fee: String, water_fee_type: Int, water_fee: String, monthly_price: String, daily_price: String, max_occupier: Int, property: String, room_spaces: RoomSpaceInput, room_facility: [String], room_services: [String], room_other_facility: [String], contract: [String], total_deposit: String, latest_electricity_number: Int, latest_water_number: Int, room_images: [String]): AmiRoom
+  updateRoom(id: String!, title: String!, floor: String, type: Int, description: String, en_description: String, acreage: Int!, electricity_fee: String, water_fee_type: Int, water_fee: String!, monthly_price: String!, daily_price: String, max_occupier: Int, property: String, room_spaces: RoomSpaceInput, room_facility: [String], room_services: [String], room_other_facility: [String], contract: [String], total_deposit: String, latest_electricity_number: Int, latest_water_number: Int, room_images: [String]): AmiRoom
+  createAmiRoomUnlock(params: AmiRoomUnlockInput!): AmiRoomUnlock
+  updateAmiRoomUnlock(id: String!, params: AmiRoomUnlockInput!): AmiRoomUnlock
+  createCampaign(params: CampaignInput!): Campaign
+  updateCampaign(id: String!, params: CampaignInput!): Campaign
+  saveCampaign(id: String, params: CampaignInput!): Campaign
+  deleteCampaign(id: String!): Boolean
+  updateCampaignEnrollmentStatus(ids: [String!]!): Boolean
+  createTask(params: TaskInput): Task
+  updateTask(id: String!, params: TaskInput): Task
+  deleteTask(id: String!): Boolean
+  createAmiE(deviceId: String!): Boolean
+  createAmiF(deviceId: String!): Boolean
+  deleteAmiE(deviceId: String): Boolean
+  addDevicesToLandlord(params: DevicesLandlordInput!): AddDevicesToLandlordResponse
+  removeAmiELandlord(id: String!): Boolean
+  removeAmiFLandlord(id: String!): Boolean
+  openDoorAmiF(deviceId: String!): Boolean
+  createPoliceDepartment(params: PoliceDepartmentInput!): PoliceDepartment
+  updatePoliceDepartment(id: String!, params: PoliceDepartmentInput!): PoliceDepartment
+  deletePoliceDepartment(id: String!): Boolean
+  savePolice(id: String, params: PoliceInput!): Police
+  createPolice(department_id: String!, position: Int!, user_id: String!): Police
+  deletePolice(id: String!): Boolean
+}
+
+input PagingInput {
+  limit: Int
+  offset: Int
+}
+
+type PhoneNumber {
+  int_tel_code: String
+  phone_number: String
+}
+
+input PhoneNumberInput {
+  int_tel_code: String
+  phone_number: String
+}
+
+type Police {
+  id: String
+  first_name: String
+  last_name: String
+  gender: Int
+  date_of_birth: String
+  created: DateTime
+  phone_number: String
+  identity_number: String
+  avatar: String
+  position: Int
+  department_id: String
+  department: PoliceDepartment
+  identity_account_id: User
+  is_active: Boolean
+}
+
+type PoliceDepartment {
+  id: String!
+  name: String
+  address: Address
+}
+
+input PoliceDepartmentInput {
+  name: String
+  address: AddressInput
+}
+
+input PoliceInput {
+  first_name: String!
+  last_name: String!
+  gender: Int
+  date_of_birth: String
+  phone_number: String
+  identity_number: String
+  identity_account_id: String
+  avatar: Upload
+  position: Int
+  department_id: String!
+}
+
+type Product {
+  id: String
+  title: String
+  created: DateTime
+  modified: DateTime
+  description: String
+  product_group: [Group]
+}
+
+type Profile {
+  avatar: String
+  gender: String
+  front_id_card: String
+  back_id_card: String
+  identity_number: String
+  id_valid_date: String
+  id_issued_by: String
+  passport: String
+  birthday: DateTime
+  permanent_address_id: AddressOnUser
+}
+
+input ProfileInput {
+  avatar: String
+  gender: String!
+  front_id_card: String
+  back_id_card: String
+  identity_number: String
+  id_valid_date: String
+  id_issued_by: String
+  passport: String
+  birthday: DateTime
+  address: AddressInput
+  permanent_address_id: String
+}
+
+type Query {
+  coreQuery: String
+  getAccounts(options: QueryOptionsInput): GetAccountsResponse
+  getAccount(id: String!): User
+  checkUsername(username: String): Boolean
+  getAccountsNotInLandlordCompany(options: QueryOptionsInput, position: Int!): [User]
+  getHouses(options: QueryOptionsInput): GetHouseResponse
+  getHouse(id: String): House
+  getCompany(id: String!): Company
+  getCompanies(options: QueryOptionsInput): GetCompanyResponse
+  getListCompanies: [String]
+  getAddress(id: String!): Address
+  getCities: [GetCitiesResponse]
+  getDistricts(id: Int!): [GetDistrictsResponse]
+  getWards(id: Int!): [GetWardsResponse]
+  getLandlord(id: String!): Landlord
+  getLandlords(options: QueryOptionsInput): GetLandlordResponse
+  getActiveHistories(landlord_id: String!, options: QueryOptionsInput): GetActiveHistoryResponse
+  getProductRoles(options: QueryOptionsInput): GetProductRolesResponse
+  getGroups(options: QueryOptionsInput): GetGroupsResponse
+  getAmiRooms(options: QueryOptionsInput): GetAmiRoomResponse
+  getAmiRoom(id: String): AmiRoom
+  getAmiRoomUnlocks(options: QueryOptionsInput): GetAmiRoomUnlockResponse
+  getAmiRoomUnlock(id: String): AmiRoomUnlock
+  getRoomHistory(id: String): [AmiRoomUnlock]
+  getRoomTimeRecord(id: String): TimeRecord
+  getRoomFacility: [RoomFacility]
+  getCampaigns(options: QueryOptionsInput): GetCampaignsResponse
+  getCampaign(id: String!): Campaign
+  getCampaignCategories: GetCategoriesResponse
+  getCampaignEnrollment(campaign_id: String!, options: QueryOptionsInput): GetCampaignEnrollmentResponse
+  getTask(id: String!): Task
+  getTasks(options: QueryOptionsInput): GetTaskResponse
+  getDashboard: DashboardLandlord
+  getBuildingDashboard: DashboardBuilding
+  getSituationRoomDashboard(options: QueryOptionsInput): SituationRoomDashboard
+  getLandlordIssueDashboard(year: Int!, month: Int!, options: QueryOptionsInput): LandlordIssue
+  getLandlordHeroIssueDashboard(year: Int!, month: Int!, options: QueryOptionsInput): LandlordHeroIssue
+  getBillStatusDashboard(year: Int!, month: Int!, options: QueryOptionsInput): BillStatusLandlord
+  getTotalAccountUniversity: GetTotalAccountUniversityResponse
+  getSituationApartmentDashboard(options: QueryOptionsInput): SituationApartmentDashboard
+  getBillStatusBuildingDashboard(options: QueryOptionsInput): BillStatusBuilding
+  getBuildingIssueDashboard(year: Int!, options: QueryOptionsInput): BuildingIssue
+  getBuildingIssueStatusDashboard(year: Int!, month: Int!, options: QueryOptionsInput): BuildingIssueStatus
+  getAmiEDevices(options: IotFilterOptions): [AmiEDevices]
+  getAmiFDevices(options: IotFilterOptions): [AmiFDevices]
+  getIotMangementLandlord(options: QueryOptionsInput): GetIotManagementResponse
+  getIotManagementDetail(id: String!): IotLandlordManagement
+  getRoomIotManagementLandlord(propertyId: String!, options: QueryOptionsInput): GetRoomManagementResponse
+  getRegUsersFingerprint(deviceId: String!): [RegisterUserFingerprint]
+  getFingerServerInfo(deviceId: String!, serverId: String!): FingerprintServerInfo
+
+  """Filter by: date, device_name, name"""
+  getHistoryFingerprint(options: QueryOptionsInput): GetRegUsersFingerprintResponse
+  getPoliceDepartments(options: QueryOptionsInput): GetPoliceDepartmentResponse
+  getPoliceDepartment(id: String): PoliceDepartment
+  getPolices(options: QueryOptionsInput): GetPoliceResponse
+  getPolice(id: String): Police
+  getFinanceAmiCDeposit(options: QueryOptionsInput): GetFinanceAmiCDepositResponse
+  getFinanceAmiCInvoice(options: QueryOptionsInput): GetFinanceAmiCInvoiceResponse
+}
+
+input QueryOptionsInput {
+  filter: [FilterInput]
+  paging: PagingInput
+}
+
+type RegisterUserFingerprint {
+  finger_user_id: String
+  name: String
+  phone: String
+  role: Int
+  status: Int
+  fingers: [Finger]
+}
+
+type Role {
+  id: String!
+  name: String!
+}
+
+type RoomFacility {
+  id: String
+  title: String
+  description: String
+}
+
+input RoomSpaceInput {
+  living_room: Int
+  kitchen: Int
+  bedroom: Int
+  bathroom: Int
+  balcony: Int
+}
+
+type RoomStatus {
+  room_status: Int
+  total: Int
+  percent: Float
+}
+
+type SituationApartmentDashboard {
+  aparments_empty: Int
+  aparments_staying: Int
+}
+
+type SituationRoomDashboard {
+  deposit_room: Int
+  occupy_rooms: Int
+  available_soon_rooms: Int
+  check_out_gte_7days_rooms: Int
+  check_out_lt_7days_rooms: Int
+}
+
+input TargetInput {
+  id: String
+  age_from: Int
+  age_to: Int
+  district: Int
+  city: Int
+  gender: String
+}
+
+type Task {
+  id: String
+  created: DateTime
+  modified: DateTime
+  name: String
+  callback_url: String
+  type: Int
+  is_enable: Boolean
+  second: String
+  minute: String
+  hour: String
+  day_of_week: String
+  day_of_month: String
+  month: String
+  archived: Boolean
+  task_id: String
+}
+
+enum TaskBlobEnum {
+  avatar
+  id_card
+}
+
+input TaskInput {
+  name: String
+  callback_url: String
+  type: Int
+  is_enable: Boolean
+  second: String
+  minute: String
+  hour: String
+  day_of_week: String
+  day_of_month: String
+  month: String
+}
+
+type TimeRecord {
+  avg_time: String
+  fastest_deal_time: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UploadOptions {
+  taskblob: TaskBlobEnum!
+}
+
+type User {
+  id: String!
+  username: String
+  password: String
+  groups: [String]
+  products: [Product]
+  phone_numbers: [PhoneNumber]
+  email: Email
+  profile: Profile
+  last_name: String
+  first_name: String
+  date_joined: String
+  is_active: Boolean
+}
