@@ -1,0 +1,19 @@
+
+.split,
+.gutter.gutter-horizontal {
+  float: left;
+}
+
+.gutter.gutter-horizontal {
+  cursor: ew-resize;
+}
+
+.gutter {
+  float: left;
+  background-color: #eee;
+  cursor: ew-resize;
+}
+
+.CodeMirror {
+  height: 100% !important;
+}

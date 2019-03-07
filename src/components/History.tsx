@@ -3,21 +3,7 @@ import React from 'react';
 import { Ul } from './Ul';
 import { ButtonRemove } from './Button';
 import styled from '../theme/styled-components';
-
-const Item = styled('li')<{ isActive: boolean }>`
-  padding: 10px;
-  border-bottom: solid 1px;
-  border-color: ${props => props.theme.borderColor};
-  display: flex;
-  justify-content: space-between;
-  color: ${props => (props.isActive ? props.theme.primaryColor : '#000')};
-
-  &:hover {
-    background-color: ${props => props.theme.secondaryColor};
-    cursor: pointer;
-    color: #fff;
-  }
-`;
+import { LiActive } from './Li';
 
 const HistoryUl = styled(Ul)`
   border-top: solid 1px;
@@ -32,10 +18,10 @@ export const History: React.StatelessComponent<{
 }> = ({ histories, uri, onSelect, onRemove }) => (
   <HistoryUl>
     {histories.map(history => (
-      <Item
+      <LiActive
         key={history}
         onClick={() => onSelect(history)}
-        isActive={history === uri}
+        className={history === uri ? 'active' : ''}
       >
         <span>{history}</span>
 
@@ -47,7 +33,7 @@ export const History: React.StatelessComponent<{
             onRemove(history);
           }}
         />
-      </Item>
+      </LiActive>
     ))}
   </HistoryUl>
 );

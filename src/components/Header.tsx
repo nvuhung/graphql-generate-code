@@ -4,7 +4,7 @@ import styled from '../theme/styled-components';
 
 const HeaderStyled = styled.div`
   text-align: center;
-  height: 60px;
+  height: 50px;
 `;
 
 export const Header = () => (

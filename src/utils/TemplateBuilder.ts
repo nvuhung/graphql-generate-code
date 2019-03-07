@@ -1,10 +1,10 @@
 import {
   isGraphQLNonNull,
   isGraphQLList,
-  isGraphQLScalarType
+  isGraphQLScalarType,
+  getDeepKeys
 } from './CommonUtils';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
-import { object } from 'prop-types';
 
 const { json2ts } = require('json-ts');
 
@@ -63,37 +63,53 @@ function getFields(schema: any) {
   return type['_fields'];
 }
 
-function getResponseObj(schema: any): object {
+function getSchemaName(schema: any) {
+  const { type } = schema;
+  if (!type) {
+    return null;
+  }
+  if (isGraphQLList(type) && isGraphQLScalarType(type.ofType)) {
+    return type.ofType['name'];
+  }
+  return type['name'];
+}
+
+function getResponseObj(
+  schema: any,
+  deepKeys: any[] = [],
+  parentIndex?: any
+): object {
   const keys = Object.keys(schema);
   const obj = {};
   try {
     keys.forEach(key => {
       const name = schema[key].name;
       const fields = getFields(schema[key]);
+
+      const schemaName = getSchemaName(schema[key]);
+
       if (!fields) {
         let value = scalarToTypescript[schema[key].type.name];
         obj[name] = value || 'String';
       } else {
-        obj[name] = getResponseObj(fields);
+        const isAddedBefore = deepKeys.find(
+          k => k.schemaName === schemaName && k.parentIndex !== parentIndex
+        );
+        if (!isAddedBefore) {
+          const index = (parentIndex || 0) + 1;
+          deepKeys.push({
+            schemaName,
+            parentIndex: parentIndex || 0,
+            index
+          });
+
+          obj[name] = getResponseObj(fields, deepKeys, index);
+        }
       }
     });
     return obj;
   } catch (error) {
     return {};
-  }
-}
-
-function getResponse(schema: any): string {
-  try {
-    const fields = getFields(schema);
-    if (fields) {
-      const obj = getResponseObj(fields);
-      const jsonQuery = jsonToGraphQLQuery(obj);
-      return `{ ${jsonQuery} }`;
-    }
-    return '';
-  } catch (error) {
-    return '';
   }
 }
 
@@ -113,32 +129,39 @@ function prettifyTS(str: string) {
   });
 }
 
-export function GetSchemaTemplate(schemaType: string, schema: any): string {
+export function GetAllTemplates(
+  schemaType: string,
+  schema: any
+): { graphql: string; typescript: string } {
   const schemaName = schema.name;
   const args = getArgs(schema);
   const params = getParams(schema);
-  const response = getResponse(schema);
+  const fields = getFields(schema);
+  let obj = {},
+    jsonQuery = '';
 
-  let template = `
+  if (fields) {
+    obj = getResponseObj(fields);
+    jsonQuery = `{ ${jsonToGraphQLQuery(obj)} }`;
+  }
+
+  const graphlStr = `
     const ${schemaName} = { ${schemaName}: gql\`
       ${schemaType} ${schemaName}
         ${args} {
           ${schemaName}
           ${params}
-          ${response}
+          ${jsonQuery}
       }
       \`
   }`;
+  const graphql = prettifyGraphQL(graphlStr);
 
-  return prettifyGraphQL(template);
-}
+  const typescriptStr = json2ts(JSON.stringify(obj));
+  const typescript = prettifyTS(typescriptStr);
 
-export function GetTypescript(schema: any): string {
-  const fields = getFields(schema);
-  if (fields) {
-    const obj = getResponseObj(fields);
-    const typescriptStr = json2ts(JSON.stringify(obj));
-    return prettifyTS(typescriptStr);
-  }
-  return '';
+  return {
+    graphql,
+    typescript
+  };
 }

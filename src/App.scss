@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600,700');
 @import '../node_modules/codemirror/lib/codemirror.css';
 
+@import 'styles/CodeMirror.scss';
+
 body {
   font-family: 'Source Code Pro', monospace;
   font-size: 14px;
@@ -9,16 +11,8 @@ body {
   overflow: hidden;
 }
 
-.split, .gutter.gutter-horizontal {
-  float: left;
-}
-
-.gutter.gutter-horizontal {
-  cursor: ew-resize;
-}
-
-.gutter {
-  float: left;
-  background-color: #eee;
-  cursor: ew-resize;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }

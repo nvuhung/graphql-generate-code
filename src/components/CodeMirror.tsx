@@ -36,6 +36,11 @@ export class CodeMirror extends React.Component<{ value: string }> {
   }
 
   render() {
-    return <div ref={elementRef => (this.elementRef = elementRef)} />;
+    return (
+      <div
+        style={{ height: 'calc(100% - 38px)' }}
+        ref={elementRef => (this.elementRef = elementRef)}
+      />
+    );
   }
 }

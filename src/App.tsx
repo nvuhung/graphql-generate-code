@@ -2,20 +2,34 @@ import React, { Component } from 'react';
 import { introspectSchema } from 'graphql-tools';
 import { HttpLink } from 'apollo-link-http';
 import Split from 'react-split';
+import styled from 'styled-components';
 
 import './App.scss';
 import { Input } from './components/Input';
 import { ThemeProvider } from './theme/styled-components';
 import { ThemeDefault } from './theme/theme';
 import { ButtonPrimary } from './components/Button';
-import { isValidUri } from './utils/CommonUtils';
-import { GetSchemaTemplate, GetTypescript } from './utils/TemplateBuilder';
+import { isValidUri, filterSchema } from './utils/CommonUtils';
 import { History } from './components/History';
 import { SchemaList } from './components/SchemaList';
 import { Header } from './components/Header';
-import { Wrapper, Column } from './components/Wrapper';
+import {
+  Wrapper,
+  Column,
+  SchemaHeader,
+  SchemaContainer
+} from './components/Wrapper';
 import { Form } from './components/Form';
 import { CodeMirror } from './components/CodeMirror';
+import { GetAllTemplates } from './utils/TemplateBuilder';
+
+const ResultHeader = styled.div`
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
+  padding: 10px;
+  background-color: #eee;
+`;
 
 class App extends Component {
   state = {
@@ -24,10 +38,11 @@ class App extends Component {
     queries: [],
     mutations: [],
     histories: [],
-    schemaTemplate: '',
+    graphql: '',
     typescript: '',
     schemaSelected: null,
-    schemaType: null
+    schemaType: null,
+    textSearchSchema: ''
   };
 
   componentDidMount() {
@@ -108,22 +123,19 @@ class App extends Component {
   }
 
   _renderResult() {
-    const { schemaTemplate, typescript } = this.state;
+    const { graphql, typescript } = this.state;
     return (
-      <Split
-        style={{ display: 'flex', flexDirection: 'column' }}
-        direction="vertical"
-        sizes={[50, 50]}
-      >
-        <div>
-          <h1>GraphQL</h1>
-          <CodeMirror value={schemaTemplate} />
-        </div>
-        <div>
-          <h1>Typescript</h1>
+      <div style={{ height: '100%' }}>
+        <SchemaContainer>
+          <SchemaHeader>GraphQL</SchemaHeader>
+          <CodeMirror value={graphql} />
+        </SchemaContainer>
+
+        <SchemaContainer>
+          <SchemaHeader>Typescript</SchemaHeader>
           <CodeMirror value={typescript} />
-        </div>
-      </Split>
+        </SchemaContainer>
+      </div>
     );
   }
 
@@ -145,7 +157,6 @@ class App extends Component {
 
     return (
       <Form
-        className="form"
         onSubmit={event => {
           event.preventDefault();
           this.handleSubmit(uri);
@@ -162,24 +173,45 @@ class App extends Component {
   }
 
   _renderSchema() {
-    const { queries, mutations } = this.state;
+    const {
+      queries,
+      mutations,
+      textSearchSchema,
+      schemaSelected,
+      schemaType
+    } = this.state;
+
+    const queriesFiltered = filterSchema(queries, textSearchSchema);
+    const mutationsFiltered = filterSchema(mutations, textSearchSchema);
 
     return (
-      <SchemaList
-        queries={queries}
-        mutations={mutations}
-        onSelect={(schemaType: string, schemaSelected: any) =>
-          this.setState({ schemaType, schemaSelected }, () => {
-            const schemaTemplate = GetSchemaTemplate(
-              schemaType,
-              schemaSelected
-            );
-            const typescript = GetTypescript(schemaSelected);
-            console.log(typescript);
-            this.setState({ schemaTemplate, typescript });
-          })
-        }
-      />
+      <>
+        <div style={{ padding: 10, display: 'flex' }}>
+          <Input
+            placeholder="Search schema..."
+            value={textSearchSchema}
+            onChange={event =>
+              this.setState({ textSearchSchema: event.target.value })
+            }
+          />
+        </div>
+
+        <SchemaList
+          schemaNameSelected={(schemaSelected && schemaSelected['name']) || ''}
+          schemaType={schemaType || ''}
+          queries={queriesFiltered}
+          mutations={mutationsFiltered}
+          onSelect={(schemaType: string, schemaSelected: any) =>
+            this.setState({ schemaType, schemaSelected }, () => {
+              const { graphql, typescript } = GetAllTemplates(
+                schemaType,
+                schemaSelected
+              );
+              this.setState({ graphql, typescript });
+            })
+          }
+        />
+      </>
     );
   }
 
@@ -193,6 +225,7 @@ class App extends Component {
             <Split
               style={{ display: 'flex', flexDirection: 'row', height: '100%' }}
               direction="horizontal"
+              minSize={320}
               sizes={[33, 33, 34]}
             >
               <Column>
