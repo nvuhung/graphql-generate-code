@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { introspectSchema } from 'graphql-tools';
 import { HttpLink } from 'apollo-link-http';
 import Split from 'react-split';
-import styled from 'styled-components';
 
 import './App.scss';
 import { Input } from './components/Input';
@@ -22,14 +21,7 @@ import {
 import { Form } from './components/Form';
 import { CodeMirror } from './components/CodeMirror';
 import { GetAllTemplates } from './utils/TemplateBuilder';
-
-const ResultHeader = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  text-transform: uppercase;
-  padding: 10px;
-  background-color: #eee;
-`;
+import { Loader } from './components/Loader';
 
 class App extends Component {
   state = {
@@ -42,7 +34,8 @@ class App extends Component {
     typescript: '',
     schemaSelected: null,
     schemaType: null,
-    textSearchSchema: ''
+    textSearchSchema: '',
+    isLoading: false
   };
 
   componentDidMount() {
@@ -53,7 +46,14 @@ class App extends Component {
   }
 
   showLinkError() {
-    alert('Link is invalid');
+    this.setState(
+      {
+        isLoading: false
+      },
+      () => {
+        alert('Link is invalid');
+      }
+    );
   }
 
   updateHistory(histories: string[]) {
@@ -83,7 +83,7 @@ class App extends Component {
       this.showLinkError();
       return;
     }
-    this.setState({ uri });
+    this.setState({ uri, isLoading: true });
     const link = new HttpLink({
       uri,
       fetch
@@ -112,7 +112,8 @@ class App extends Component {
         this.setState({
           schema,
           queries,
-          mutations
+          mutations,
+          isLoading: false
         });
       } else {
         this.showLinkError();
@@ -219,6 +220,8 @@ class App extends Component {
     return (
       <ThemeProvider theme={ThemeDefault}>
         <>
+          {this.state.isLoading && <Loader />}
+
           <Header />
 
           <Wrapper>
