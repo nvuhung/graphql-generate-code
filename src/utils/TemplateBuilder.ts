@@ -146,7 +146,7 @@ export function GetAllTemplates(
   }
 
   const graphlStr = `
-    const ${schemaName} = { ${schemaName}: gql\`
+    const ${schemaName} = gql\`
       ${schemaType} ${schemaName}
         ${args} {
           ${schemaName}
@@ -154,7 +154,7 @@ export function GetAllTemplates(
           ${jsonQuery}
       }
       \`
-  }`;
+    `;
   const graphql = prettifyGraphQL(graphlStr);
 
   const typescriptStr = json2ts(JSON.stringify(obj));
